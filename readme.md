@@ -1,27 +1,141 @@
-# Laravel PHP Framework
+<p align="center">
+  <img src="images/logo.png" alt="Laravel blog: fast and powerful!" width="200">
+  <br>
+  <a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
+  <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
+</p>
+<p align="center">Fast and powerful blog system powered by laravel 5.3. Click https://lufficc.com/blog to view.</p>
+<p align="center"><img src="images/main1.png"  width="800"><p>
+<br>
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+# laravel blog
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+[中文readme](README_zh.md)|[Install](https://lufficc.com/blog/how-to-install-my-blog)
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+This blog is for my own use. I used to use hexo and github pages as my blog, but it's not flexible. Thus I write this
+blog. What I want to say is laravel is the best php framework I've ever seen.
 
-## Official Documentation
+Later I will share some experience of writing this blog, welcome your watch.
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
+If you find bugs , glad you to issue.
 
-## Contributing
+## Features
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+1. Markdown editor,upload images to qiniu cloud by drag or from clipboard.
+1. Improved comment system. 
+1. Github login.
+1. Separate models from controllers with repository design pattern.
+1. Cache with redis database `0` and session with redis database `1`.
+1. Images and files management.
+1. ~~Pjax support.~~
+1. Google analytics,admin management.
+1. Posts with category, tags,code highlight and different status. 
+1. XSS protection
+1. More customs...
+ 
+## Requires
 
-## Security Vulnerabilities
+1. "php": ">=5.6.4"
+1. "mysql": ">=5.7"
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+## Change log
+
+1. Redis now is not a must, config your own cache drive.If you do not want to use cache,change `Repositories\Repository`'s`remember`method like below,it won't effect your logic:
+```
+     public function remember($key, Closure $entity, $tag = null)
+    {
+        return $entity();
+        //return cache()->tags($tag == null ? $this->tag() : $tag)->remember($key, $this->time, $entity);
+    }
+
+```
+
+
+2. add search powered by [algolia](https://www.algolia.com/)
+
+## Install
+
+```
+git clone https://github.com/lufficc/laravel-blog.git
+
+cd laravel-blog
+
+// complete your .env file
+
+composer update
+
+php artisan migrate
+
+php artisan serve
+
+// that's all
+
+```
+
+## Attention
+
+Please config your .env,you can copy `.env.example` and complete it:
+```
+
+// qiniu cloud for file upload
+QINIU_AK= 
+QINIU_SK=
+QINIU_BUCKET=
+
+
+// github oauth2 for github login
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+GITHUB_REDIRECT=
+
+// default user avatar 
+AVATAR=
+
+```
+
+
+## More screen shots
+<p align="center">Code highlight post<p>
+<p align="center"><img src="images/post.png" alt="post.png" width="85%"><p>
+<br>
+
+<p align="center">Markdown support comments<p>
+<p align="center"><img src="images/markdown-support-comment.png" alt="markdown-support-comment.png" width="85%"><p>
+<br>
+
+<p align="center">Write post with creating multiple tags , selecting category , draging pictures to upload and auto saving.<p>
+<p align="center"><img src="images/write-post.png" alt="write-post.png" width="85%"><p>
+<br>
+
+<p align="center">Writing post in fullscreen(with preview) mode without interruptting.<p>
+<p align="center"><img src="images/write-post-fullscreen.png" alt="write-post-fullscreen.png" width="85%"><p>
+<br>
+
+<p align="center">Full states post management(publish,revoke,softdelete,delete,restore,draft)<p>
+<p align="center"><img src="images/full-state-post-management.png" alt="full-state-post-management.png" width="85%"><p>
+<br>
+
+<p align="center">Admin dashboard<p>
+<p align="center"><img src="images/admin-index.png" alt="admin-index.png" width="85%"><p>
+<br>
+
+
+<p align="center">Image management<p>
+<p align="center"><img src="images/image-management.png" alt="image-management.png" width="85%"><p>
+<br>
+
+<p align="center">Comment management<p>
+<p align="center"><img src="images/comment-management.png" alt="comment-management.png" width="85%"><p>
+<br>
+
+<p align="center">Site settings<p>
+<p align="center"><img src="images/site-settings.png" alt="site-settings.png" width="85%"><p>
+<br>
+
+## Thanks
+
+[laravel-china](https://laravel-china.org/)
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+This blog is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).

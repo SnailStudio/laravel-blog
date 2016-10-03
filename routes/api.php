@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,6 +11,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-});
+/*Route::get('/categories', 'CategoryApiController@index');
+Route::get('/posts', 'PostApiController@index');
+Route::get('/post/{slug}', 'PostApiController@show')->middleware('auth:api');*/

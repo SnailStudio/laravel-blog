@@ -1,29 +1,73 @@
-<header class="main-header jumbotron">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <a class="branding" href="http://blog.lufficc.com" title="title">
-                    <img class="img-circle" src="https://avatars1.githubusercontent.com/u/20706332">
-                </a>
-                <h2>lufficc</h2>
-                @if(Auth::check())
-                    <p>Welcome {{ Auth::user()->name }}
-                        <span>
-                        <a href="{{ url('/logout') }}" style="color: white;"
-                           onclick="event.preventDefault();
-                                                 document.getElementById('logout-form').submit();">
-                            Logout
-                        </a>
-
-                        <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
-                            {{ csrf_field() }}
-                        </form>
-                    </span>
-                    </p>
-                @else
-                    <p>Stay hungry.Stay Foolish.</p>
-                @endif
+@if(isset($background_image) && $background_image)
+    <style>
+        @media screen and (min-width: 768px) {
+            .main-header {
+                background: url("{{ $background_image }}") no-repeat center center;
+                background-size: 100% auto;
+                position: static;
+            }
+        }
+    </style>
+@endif
+<header class="main-header">
+    <div class="container-fluid" style="margin-top: -15px">
+        <nav class="navbar site-navbar" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#blog-navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="{{ route('post.index') }}"
+                   class="navbar-brand">{{ $author or 'blog' }}</a>
             </div>
-        </div>
+            <div class="collapse navbar-collapse fix-top" id="blog-navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a class="menu-item" href="{{ route('achieve') }}">归档</a></li>
+                    <li><a class="menu-item" href="{{ route('projects') }}">项目</a></li>
+                    <li><a class="menu-item" href="{{ route('page.about') }}">关于</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right blog-navbar">
+                    @if(Auth::check())
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                @if(auth()->user()->github_id)
+                                    <i class="fa fa-github fa-fw"></i>
+                                @endif
+                                {{ auth()->user()->name }}
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ route('user.show',auth()->user()->name) }}">个人中心</a></li>
+                                @if(isAdmin(Auth::user()))
+                                    <li><a href="{{ route('admin.index') }}">后台管理</a></li>
+                                @endif
+                                <li class="divider"></li>
+                                <li><a href="{{ url('/logout') }}" onclick="event.preventDefault();
+                                                 document.getElementById('logout-form').submit();">
+                                        退出登录
+                                    </a>
+                                </li>
+                                <form id="logout-form" action="{{ url('/logout') }}" method="POST"
+                                      style="display: none;">
+                                    {{ csrf_field() }}
+                                </form>
+                            </ul>
+                        </li>
+                    @else
+                        <li><a href="{{ url('login') }}">登录</a></li>
+                        <li><a href="{{ url('register') }}">注册</a></li>
+                    @endif
+                </ul>
+                <form class="navbar-form navbar-right" role="search" method="get" action="{{ route('search') }}">
+                    <input type="text" class="form-control" name="q" placeholder="搜索" required>
+                </form>
+            </div>
+        </nav>
+    </div>
+    <div class="container-fluid">
+        <div class="description">{{ $description or 'description' }}</div>
     </div>
 </header>

@@ -55,6 +55,7 @@ class RouteServiceProvider extends ServiceProvider
             'middleware' => 'web',
             'namespace' => $this->namespace,
         ], function ($router) {
+            $router->pattern('post', '[0-9]+');
             require base_path('routes/web.php');
         });
     }
@@ -69,8 +70,8 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapApiRoutes()
     {
         Route::group([
-            'middleware' => ['api', 'auth:api'],
-            'namespace' => $this->namespace,
+            'middleware' => ['api'],
+            'namespace' => 'App\Http\Controllers\Api',
             'prefix' => 'api',
         ], function ($router) {
             require base_path('routes/api.php');
